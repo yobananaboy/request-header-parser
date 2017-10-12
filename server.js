@@ -12,7 +12,7 @@ var app = express();
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
@@ -20,16 +20,14 @@ app.get("/", (req, res) => {
   response.send(dreams);
 });*/
 
-app.get("/api/whoami", (req, res) => {
-  var iq = req.headers['x-forwarded-for'].split(',')[0] || req.connection.remoteAddress;
+app.get('/api/whoami', (req, res) => {
+  var ip = req.headers['x-forwarded-for'].split(',')[0] || req.connection.remoteAddress;
   var lang = req.headers["accept-language"].split(',')[0];
   var software = req.headers['user-agent'].match(/\(([^()]*)\)/)[1];
   
-  console.log(req.headers["accept-language"].split(',')[0]);
-  console.log(req.headers['user-agent'].match(/\(([^()]*)\)/)[1]);
-  console.log(req.headers['x-forwarded-for'].split(',')[0]);
+  var json = { ip: ip, lang: lang, software: software };
   
-  res.sendFile(__dirname + '/views/index.html');
+  res.send(JSON.stringify(json));
 });
 
 /*
