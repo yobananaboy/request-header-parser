@@ -1,6 +1,3 @@
-// server.js
-// where your node app starts
-
 // init project
 var express = require('express');
 var app = express();
@@ -30,20 +27,27 @@ app.get('/api/whoami', (req, res) => {
   res.send(JSON.stringify(json));
 });
 
-/*
-// could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.post("/dreams", function (request, response) {
-  dreams.push(request.query.dream);
-  response.sendStatus(200);
+
+app.get('*', (req, res, next) => {
+  var err = new Error();
+  err.status = 404;
+  next(err);
 });
 
-// Simple in-memory store for now
-var dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
-*/
+// handling 404 errors
+app.use(function(err, req, res, next) {
+  if(err.status !== 404) {
+    return next();
+  }
+
+  res.send(err.message || "Whoops! That page doesn't exist.");
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
