@@ -22,8 +22,11 @@ app.get('/api/whoami', (req, res) => {
   var lang = req.headers["accept-language"].split(',')[0];
   var software = req.headers['user-agent'].match(/\(([^()]*)\)/)[1];
   
-  var json = { ip: ip, lang: lang, software: software };
-  
+  var json = { "ip": ip,
+              "software": software,
+              "lang": lang
+             };
+  res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(json));
 });
 
