@@ -13,10 +13,6 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-/*app.get("/dreams", function (request, response) {
-  response.send(dreams);
-});*/
-
 app.get('/api/whoami', (req, res) => {
   var ip = req.headers['x-forwarded-for'].split(',')[0] || req.connection.remoteAddress;
   var lang = req.headers["accept-language"].split(',')[0];
